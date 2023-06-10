@@ -1,0 +1,12 @@
+{
+  "name": "rifason",
+  "version": "1.0.0",
+  "description": "rifas online",
+  "main": "server.js", // Substitua 'server.js' pelo nome do seu arquivo principal do servidor
+  "scripts": {
+    "start": "node server.js" // Substitua 'server.js' pelo nome do seu arquivo principal do servidor
+  },
+  "dependencies": {
+  "express": "^4.17.1"
+}
+}
