@@ -7,6 +7,6 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "mongoose": "^7.2.3"
+    "express": "^4.17.1"
 }
 }
