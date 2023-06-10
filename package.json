@@ -2,12 +2,12 @@
   "name": "rifason",
   "version": "1.0.0",
   "description": "rifas online",
-  "main": "server.js",
+  "main": "server.js", 
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "mongoose": "^7.2.3",
     "express": "^4.17.1"
-  }
+  }  
 }
