@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Defina a URL de conexão com o banco de dados MongoDB
-const MONGODB_URI = 'mongodb://localhost:27017/nome-do-banco-de-dados';
+const MONGODB_URI = 'mongodb+srv://joaoquintana:<19126247-Joao>@cluster0.mms1wdd.mongodb.net/?retryWrites=true&w=majority';
 
 // Conecte-se ao banco de dados MongoDB
 mongoose.connect(MONGODB_URI, {
