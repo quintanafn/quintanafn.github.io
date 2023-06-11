@@ -85,6 +85,18 @@ app.get('/ips', async (req, res) => {
   }
 });
 
+app.get('/ips', (req, res) => {
+  IP.find()
+    .then((ips) => {
+      res.json(ips);
+    })
+    .catch((error) => {
+      console.error('Ocorreu um erro ao obter os IPs:', error);
+      res.status(500).json({ error: 'Ocorreu um erro ao obter os IPs.' });
+    });
+});
+
+
 // Inicie o servidor Express
 app.listen(PORT, () => {
   console.log(`Servidor Express rodando na porta ${PORT}`);
