@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Defina a URL de conexão com o banco de dados MongoDB
-const MONGODB_URI = 'mongodb+srv://joaoquintana:<19126247-Joao>@cluster0.mms1wdd.mongodb.net/rifas?retryWrites=true&w=majority';
+const MONGODB_URI = 'mongodb+srv://joaoquintana:19126247-Joao@cluster0.mms1wdd.mongodb.net/rifas?retryWrites=true&w=majority';
 
 // Defina o esquema do modelo de IP
 const ipSchema = new mongoose.Schema({
