@@ -96,20 +96,25 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     showSelectedNumbers();
   } else {
-    console.error("Erro ao obter as seleções:", response.statusText);
+    console.error("Erro ao obter seleções:", response.statusText);
   }
-});
 
-function showSelectedNumbers() {
   const numbers = document.getElementsByClassName("number");
 
   for (let i = 0; i < numbers.length; i++) {
     const number = numbers[i];
-    const numberValue = number.textContent;
+    const numberText = number.textContent;
 
-    if (selectedNumbers.includes(numberValue)) {
-      number.classList.add("selected");
+    if (selectedNumbers.includes(numberText)) {
       number.classList.add("submitted");
     }
   }
-}
+
+  // Verifica se há mais de 100 números para mostrar o botão "Mostrar Mais"
+  if (numbers.length > 100) {
+    for (let i = 100; i < numbers.length; i++) {
+      numbers[i].style.display = "none";
+    }
+    showMoreButton.style.display = "inline-block";
+  }
+});
