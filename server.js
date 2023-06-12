@@ -49,6 +49,7 @@ app.use(express.json());
 
 // Defina a rota POST para receber as seleções de números e IPs
 app.post('/selecoes', async (req, res) => {
+  console.log('Requisição POST recebida em /selecoes');
   try {
     const { ipAddress, selectedNumber } = req.body;
 
@@ -77,6 +78,7 @@ app.post('/selecoes', async (req, res) => {
 
 // Defina a rota GET para obter as seleções existentes
 app.get('/selecoes', async (req, res) => {
+  console.log('Requisição GET recebida em /selecoes');
   try {
     const selecoes = await IP.find({}, 'ipAddress selectedNumber');
     res.status(200).json(selecoes);
