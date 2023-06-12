@@ -2,6 +2,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+// Importe o modelo
+const IP = require('./models');
+
 // Crie uma instância do servidor Express
 const app = express();
 
