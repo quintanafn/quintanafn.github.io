@@ -2,9 +2,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-// Importe o modelo
-const IP = require('./models');
-
 // Crie uma instância do servidor Express
 const app = express();
 
@@ -47,58 +44,49 @@ mongoose.connect(MONGODB_URI, {
     console.error('Erro ao conectar ao MongoDB', error);
   });
 
-// Defina as rotas e lógica do servidor
+// Permitir o uso de JSON no corpo das requisições
+app.use(express.json());
 
-// Rota para cadastrar um IP e número escolhido
-app.post('/ips', async (req, res) => {
-  const { ipAddress, chosenNumber } = req.body;
-
+// Defina a rota POST para receber as seleções de números e IPs
+app.post('/selecoes', async (req, res) => {
   try {
-    // Verifique se o IP já escolheu um número anteriormente
+    const { ipAddress, selectedNumber } = req.body;
+
+    // Verificar se o IP já fez uma seleção anteriormente
     const existingIP = await IP.findOne({ ipAddress });
     if (existingIP) {
-      return res.status(400).json({ error: 'Esse IP já escolheu um número.' });
+      return res.status(400).json({ error: 'Esse IP já fez uma seleção.' });
     }
 
-    // Crie uma nova instância do IP com os dados recebidos
-    const newIP = new IP({ ipAddress, chosenNumber });
+    // Verificar se o número já foi selecionado
+    const existingNumber = await IP.findOne({ selectedNumber });
+    if (existingNumber) {
+      return res.status(400).json({ error: 'Esse número já foi selecionado.' });
+    }
 
-    // Salve o IP no banco de dados
-    await newIP.save();
+    // Criar uma nova seleção de número e IP
+    const newSelection = new IP({ ipAddress, selectedNumber });
+    await newSelection.save();
 
-    // Envie uma resposta de sucesso
-    res.status(201).json({ message: 'IP cadastrado com sucesso!' });
+    res.status(201).json({ message: 'Seleção registrada com sucesso.' });
   } catch (error) {
-    console.error('Erro ao cadastrar o IP', error);
-    res.status(500).json({ error: 'Ocorreu um erro ao cadastrar o IP.' });
+    console.error('Erro ao registrar seleção:', error);
+    res.status(500).json({ error: 'Ocorreu um erro ao registrar a seleção.' });
   }
 });
 
-// Rota para listar todos os IPs que já escolheram números
-app.get('/ips', async (req, res) => {
+// Defina a rota GET para obter as seleções existentes
+app.get('/selecoes', async (req, res) => {
   try {
-    // Obtenha todos os IPs do banco de dados
-    const ips = await IP.find();
-
-    // Envie a lista de IPs como resposta
-    res.json(ips);
+    const selecoes = await IP.find({}, 'ipAddress selectedNumber');
+    res.status(200).json(selecoes);
   } catch (error) {
-    console.error('Erro ao obter os IPs', error);
-    res.status(500).json({ error: 'Ocorreu um erro ao obter os IPs.' });
+    console.error('Erro ao obter as seleções:', error);
+    res.status(500).json({ error: 'Ocorreu um erro ao obter as seleções.' });
   }
 });
 
-app.get('/ips', (req, res) => {
-  IP.find()
-    .then((ips) => {
-      res.json(ips);
-    })
-    .catch((error) => {
-      console.error('Ocorreu um erro ao obter os IPs:', error);
-      res.status(500).json({ error: 'Ocorreu um erro ao obter os IPs.' });
-    });
-});
-
+// Outras rotas e lógica do servidor podem ser adicionadas aqui
 
 // Inicie o servidor Express
 app.listen(PORT, () => {
