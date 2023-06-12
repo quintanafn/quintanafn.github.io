@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 // Defina a porta em que o servidor irá escutar
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3005;
 
 // Defina a URL de conexão com o banco de dados MongoDB
 const MONGODB_URI = 'mongodb+srv://joaoquintana:19126247-Joao@cluster0.mms1wdd.mongodb.net/rifas?retryWrites=true&w=majority';
