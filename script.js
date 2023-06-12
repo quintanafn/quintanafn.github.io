@@ -52,6 +52,35 @@ async function submitSelection() {
 
   selectedNumbers.push(selectedNumber.textContent);
   selectedNumber.classList.add("submitted");
+  
+  async function submitSelection() {
+  if (selectedNumber === null) {
+    alert("Por favor, selecione um número.");
+    return;
+  }
+
+  selectedNumbers.push(selectedNumber.textContent);
+  selectedNumber.classList.add("submitted");
+
+  console.log("Números selecionados:", selectedNumbers);
+
+  // Captura o endereço IP do usuário
+  const responseIp = await fetch("https://api.ipify.org?format=json");
+  const dataIp = await responseIp.json();
+  const userIpAddress = dataIp.ip;
+
+  // Envia a seleção para o servidor
+  const response = await fetch("/selecoes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ipAddress: userIpAddress,
+      selectedNumber: selectedNumber.textContent,
+    }),
+  });
+
 
   console.log("Números selecionados:", selectedNumbers);
 
