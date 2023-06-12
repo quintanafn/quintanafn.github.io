@@ -88,7 +88,7 @@ function disableSelection() {
 
 window.addEventListener("DOMContentLoaded", async () => {
   // Busca os números selecionados por outros usuários
-  const response = await fetch("/selecoes");
+  const response = await fetch("http://localhost:3000/selecoes");
 
   if (response.ok) {
     const selecoes = await response.json();
