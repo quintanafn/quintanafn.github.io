@@ -44,7 +44,7 @@ function selectNumber(event) {
   }
 }
 
-function submitSelection() {
+async function submitSelection() {
   if (selectedNumber === null) {
     alert("Por favor, selecione um número.");
     return;
@@ -54,7 +54,24 @@ function submitSelection() {
   selectedNumber.classList.add("submitted");
 
   console.log("Números selecionados:", selectedNumbers);
-  // Aqui você pode adicionar a lógica para processar os números selecionados, como salvá-los no servidor ou realizar alguma ação específica com eles
+
+  // Envia a seleção para o servidor
+  const response = await fetch("/selecoes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ipAddress: "YOUR_IP_ADDRESS", // Substitua pelo endereço IP real do usuário
+      selectedNumber: selectedNumber.textContent,
+    }),
+  });
+
+  if (response.ok) {
+    console.log("Seleção registrada com sucesso.");
+  } else {
+    console.error("Erro ao registrar seleção:", response.statusText);
+  }
 
   disableSelection();
 }
@@ -69,30 +86,30 @@ function disableSelection() {
   submitButton.disabled = true;
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  const ipAddress = localStorage.getItem("selectedIPAddress");
+window.addEventListener("DOMContentLoaded", async () => {
+  // Busca os números selecionados por outros usuários
+  const response = await fetch("/selecoes");
 
-  if (ipAddress) {
-    // Aqui você pode adicionar a lógica para buscar os números selecionados por outros IPs no servidor ou outra fonte de dados
-    // Vamos simular que os números 3, 5 e 8 já foram selecionados
-    selectedNumbers = ["3", "5", "8"];
+  if (response.ok) {
+    const selecoes = await response.json();
+    selectedNumbers = selecoes.map((selecao) => selecao.selectedNumber);
 
     showSelectedNumbers();
-
-    disableSelection();
-    alert(
-      "Você já escolheu um número da sorte. Compre outro doce para ter outro número."
-    );
   } else {
-    localStorage.setItem("selectedIPAddress", "YOUR_IP_ADDRESS");
-  }
-
-  // Verifica se há mais de 100 números para mostrar o botão "Mostrar Mais"
-  const numbers = document.getElementsByClassName("number");
-  if (numbers.length > 100) {
-    for (let i = 100; i < numbers.length; i++) {
-      numbers[i].style.display = "none";
-    }
-    showMoreButton.style.display = "inline-block";
+    console.error("Erro ao obter as seleções:", response.statusText);
   }
 });
+
+function showSelectedNumbers() {
+  const numbers = document.getElementsByClassName("number");
+
+  for (let i = 0; i < numbers.length; i++) {
+    const number = numbers[i];
+    const numberValue = number.textContent;
+
+    if (selectedNumbers.includes(numberValue)) {
+      number.classList.add("selected");
+      number.classList.add("submitted");
+    }
+  }
+}
