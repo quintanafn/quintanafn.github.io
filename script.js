@@ -56,7 +56,7 @@ async function submitSelection() {
   console.log("Números selecionados:", selectedNumbers);
 
   // Envia a seleção para o servidor
-  const response = await fetch("http://localhost:3005/selecoes", {
+  const response = await fetch("http://localhost:3005/selecoes"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
